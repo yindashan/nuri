@@ -1,0 +1,187 @@
+
+<!-- content starts -->	
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">系统管理</a> <span class="divider">/</span>
+			</li>
+			<li>
+				<a href="#">应用项管理</a>
+			</li>
+		</ul>
+	</div>
+	
+	
+	<div class="row-fluid sortable">
+			<div class="box span12">
+				<div class="box-header well" data-original-title>
+					<h2><i class="icon-edit"></i> 编辑应用项</h2>
+					<div class="box-icon">
+					</div>
+				</div>
+				<div class="box-content">
+					<form class="form-horizontal" method="post" action="{% url appitem_edit app.id %}" onsubmit="return validateCallback(this);">
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">应用名称</label>
+								<div class="controls">
+									<span class="input-xlarge uneditable-input">{{ app.app_name }}</span>
+									<i class="icon-question-sign" data-toggle="tooltip" data-original-title="请使用英文字母、数字以及下划线，例:amap_server,建议应用名长度不超过30个字符"></i>
+								</div>
+							</div>
+						
+						  <div class="control-group">
+							<label class="control-label">描述<span style="color:#f00">*</span></label>
+							
+							<div class="controls">
+							  <input class="input-xlarge required" type="text" value="{{ app.desc }}" name="desc"/>
+							</div>
+						  </div>
+						  
+						  <div class="control-group">
+						  	<label class="control-label">检查时间间隔</label>
+							<div class="controls">
+								{% for key,value in check_dict.items %}
+								  <label class="radio inline">
+									<input type="radio" name="check_interval" value="{{key}}"  
+									
+									{% ifequal app.check_interval key %}
+										checked
+									{% endifequal %}
+									/>
+									{{value}} 
+								  </label>
+								{% endfor %}
+							</div>
+						  </div>
+						  
+						 <div class="control-group">
+						  	<label class="control-label">是否报警</label>
+							<div class="controls">
+								{% for key,value in alarm_type_dict.items %}
+								  <label class="radio inline">
+									<input type="radio" name="is_alarm" value="{{key}}"  
+									{% ifequal app.is_alarm key %}
+										checked
+									{% endifequal %}
+									/>
+									{{value}} 
+								  </label>
+								{% endfor %}
+							</div>
+						  </div>
+						 
+						<div class="control-group">
+							<label class="control-label">最大重试次数</label>
+							<div class="controls">
+								{% for key,value in retry_dict.items %}
+								  <label class="radio inline">
+									<input type="radio" name="max_check_attempts" value="{{key}}"  
+									{% ifequal app.max_check_attempts key %}
+										checked
+									{% endifequal %}
+									/>
+									{{value}} 
+								  </label>
+								{% endfor %}
+							</div>
+						 </div>
+						 
+						 <div class="control-group">
+							<label class="control-label">通知间隔</label>
+							<div class="controls">
+								{% for key,value in notify_dict.items %}
+								  <label class="radio inline">
+									<input type="radio" name="notify_interval" value="{{key}}"  
+									
+									{% ifequal app.notify_interval key %}
+										checked
+									{% endifequal %}
+									/>
+									{{value}} 
+								  </label>
+								{% endfor %}
+								<i class="icon-question-sign" data-toggle="tooltip" data-original-title="如果当前时间减去上次报警时间小于此值,则不报警"></i>
+							</div>
+						 </div>
+						 
+						 <div class="control-group">
+							<label class="control-label">应用类型</label>
+							<div class="controls">
+								{% for key,value in app_type_dict.items %}
+								  <label class="radio inline">
+									<input type="radio" name="app_type" value="{{key}}"  
+									
+									{% ifequal app.type key %}
+										checked
+									{% endifequal %}
+									/>
+									{{value}}
+								  </label>
+								{% endfor %}
+
+								  <i class="icon-question-sign" data-toggle="tooltip" data-original-title="如果你不清楚，请咨询管理员"></i>
+							</div>
+						 </div>
+						 <div class="control-group">
+							<label class="control-label">IP地址列表<span style="color:#f00">*</span></label>
+								<div class="controls">
+									<textarea name="ip_list" class="required iplist textarea_std">{{app.ip_list}}</textarea>
+									<i class="icon-question-sign" data-toggle="tooltip" data-original-title="IP地址列表，以逗号分隔,例:192.168.1.100,192.168.1.120"></i>
+								</div>
+						 </div>
+						 <div class="control-group">
+							<label class="control-label">邮件报警联系地址列表</label>
+								<div class="controls">
+									<textarea name="email_list" class="emaillist textarea_std">{{app.email_list}}</textarea>
+								</div>
+						 </div>
+						 <div class="control-group">
+							<label class="control-label">报警短信联系列表</label>
+								<div class="controls">
+									<textarea name="mobile_list" class="mobilelist textarea_std">{{app.mobile_list}}</textarea>
+								</div>
+						 </div>
+						 
+							<div class="control-group">
+								<label class="control-label">当前应用机房分布情况</label>
+								<div class="controls">
+								  	{% for key, value in noc_info_dict.iteritems %}
+								  		{% if key in noc_list_tmp %}
+									  		<label class="checkbox inline">
+												<input type="checkbox" name="noc_list" value="{{ key }}" checked="checked"> {{ value }}
+										  	</label>
+								  		{% else %}
+									  		<label class="checkbox inline">
+												<input type="checkbox" name="noc_list" value="{{ key }}"> {{ value }}
+										  	</label>
+								  		{% endif %}
+								  	{% endfor %}
+								</div>
+							  </div>
+						  
+						
+						  <div class="form-actions">
+							<button type="submit" class="btn btn-primary">保存</button>
+							<button class="btn" onclick ="return httpRedirectAjax('{% url appitem_index %}')">取消</button>
+						  </div>
+						</fieldset>
+					  </form>
+				
+				</div>
+			</div><!--/span-->
+		
+		</div><!--/row-->
+<!-- content ends -->
+
+<script language="JavaScript" type="text/javascript">
+
+//----------- start ---------------
+$(document).ready(function(){
+	 //校验
+	 $("form").validate();
+	 // 初始化 tooltip
+	 $('.icon-question-sign').tooltip();
+
+});
+</script>

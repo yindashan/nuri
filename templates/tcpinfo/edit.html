@@ -1,0 +1,72 @@
+<!-- content starts -->	
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">主动监控</a> <span class="divider">/</span>
+			</li>
+			<li>
+				<a href="#">TCP服务监控</a>
+			</li>
+		</ul>
+	</div>
+	
+	
+	<div class="row-fluid sortable">
+			<div class="box span12">
+				<div class="box-header well" data-original-title>
+					<h2><i class="icon-edit"></i> 编辑TCP服务</h2>
+				</div>
+				<div class="box-content">
+					<form class="form-horizontal" method="post" action="{% url tcpinfo_edit tcpinfo.id %}" onsubmit="return validateCallback(this);">
+						<fieldset>
+						  
+						<div class="control-group">
+							<label class="control-label">TCP服务所属应用服务</label>
+							<div class="controls">
+								<span class="input-xlarge uneditable-input">{{ tcpinfo.app.desc }}</span>
+							</div>
+						</div>
+						
+						  
+						<div class="control-group">
+							<label class="control-label">PORT</label>
+							<div class="controls">
+								<input class="input-xlarge uneditable-input" type="text" name="port" value="{{ tcpinfo.port }}" />
+								<i class="icon-question-sign" data-toggle="tooltip" 
+								data-original-title="修改时此处只有一个端口"></i>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label">响应时间</label>
+							<div class="controls">
+								<input class="input-xlarge" type="text" name="responsetime" value="{{ tcpinfo.responsetime }}" />
+								<i class="icon-question-sign" data-toggle="tooltip" 
+								data-original-title="请在此处填写数字，表示预定的响应时间，单位为ms"></i>
+							</div>
+						</div>
+						
+						
+						<div class="form-actions">
+							<button type="submit" class="btn btn-primary">保存</button>
+							<button class="btn" onclick ="return httpRedirectAjax('{% url tcpinfo_index %}')">取消</button>
+						</div>
+						</fieldset>
+					  </form>
+				
+				</div>
+			</div><!--/span-->
+		
+		</div><!--/row-->
+<!-- content ends -->
+
+<script language="JavaScript" type="text/javascript">
+//----------- start ---------------
+$(document).ready(function(){
+	//校验
+	$("form").validate();
+	
+	// 初始化 tooltip
+	$('.icon-question-sign').tooltip();
+});
+</script>

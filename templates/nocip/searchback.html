@@ -1,0 +1,54 @@
+<table class="table table-striped table-bordered bootstrap-datatable datatable">
+	<thead>
+		<tr>
+			<th>主键</th>
+			<th>机房编号</th>
+			<th>机房名称</th>
+			<th>IP</th>
+			<th>操作</th>
+		</tr>
+	</thead>   
+	<tbody>
+		{% for nocip in nocips %}
+		<tr>
+			<td>{{ nocip.id }}</td>
+			<td>{{ nocip.nocid }}</td>
+			<td>
+				{% for key, value in noc_info_dict.items %}
+					{% ifequal key nocip.nocid %}
+						{{ value }}
+					{% endifequal %}
+				{% endfor %}
+			</td>
+			<td>{{ nocip.ip }}</td>
+			
+			<td class="center ">
+				<a class="btn btn-small btn-primary" href="{% url nocip_edit nocip.id %}"  onclick="return executeMenu(this);">
+					<i class="icon-edit icon-white"></i>  
+					编辑                                           
+				</a>
+				<a class="btn btn-small btn-danger" href="{% url nocip_delete nocip.id %}" onclick="return executeDelete(this);" title="您确定要删除该项吗?">
+					<i class="icon-trash icon-white"></i> 
+					删除
+				</a>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<!-- 展示记录数,上一页，下一页等等 -->
+<div class="row-fluid">
+	<div class="span12">
+		<div class="dataTables_info">显示从{{ nocips.start_index }}到{{ nocips.end_index }} 总共{{ nocips.paginator.count }}条记录</div>
+	</div>
+	<div class="span12 center">
+		<div class="dataTables_paginate paging_bootstrap pagination">
+			<ul currPage="{{ nocips.number }}" totalPage="{{ nocips.paginator.num_pages }}" >
+				<li class="prev"><a href="{% url nocip_search %}" onclick="return searchPageJump(this);">上一页</a></li>
+				<li><a href="#">{{ nocips.number }}</a></li>
+				<li class="next"><a href="{% url nocip_search %}" onclick="return searchPageJump(this);">下一页</a></li>
+			</ul>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,90 @@
+<!-- content starts -->	
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">系统管理</a> <span class="divider">/</span>
+			</li>
+			<li>
+				<a href="#">用户管理</a>
+			</li>
+		</ul>
+	</div>
+	
+	
+	<div class="row-fluid sortable">
+			<div class="box span12">
+				<div class="box-header well" data-original-title>
+					<h2><i class="icon-edit"></i> 编辑用户</h2>
+				</div>
+				<div class="box-content">
+					<form class="form-horizontal" method="post" action="{% url account_edit user.id %}" onsubmit="return validateCallback(this);">
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">用户名</label>
+								<div class="controls">
+									<span class="input-xlarge uneditable-input">{{ user.username }}</span>
+								</div>
+							</div>
+						
+						  <div class="control-group">
+							<label class="control-label">真实姓名<span style="color:#f00">*</span></label>
+							<div class="controls">
+							  <input class="input-xlarge required" type="text" value="{{ user.realname }}" name="realname"/>
+							</div>
+						  </div>
+						  
+						  <div class="control-group">
+							<label class="control-label">电子邮件</label>
+							<div class="controls">
+							  <span class="input-xlarge uneditable-input">{{ user.email }}</span>
+							</div>
+						  </div>
+						  
+					  	  <div class="control-group">
+							<label class="control-label">角色</label>
+							<div class="controls">
+							  	{% for role in role_list %}
+							  		<label class="checkbox inline">
+										<input type="checkbox" name="role" value="{{ role.id }}" {% if role.id in user.role_ids %}checked{% endif %}/>
+										{{ role.name }}
+									</label>
+								{% endfor %}
+							</div>
+						  </div>
+						  
+						  <div class="control-group">
+							<label class="control-label">部门<span style="color:#f00">*</span></label>
+							<div class="controls">
+								<input class="input-xlarge required" type="text" value="{{ user.department }}" name="department"/>
+							</div>
+						  </div>
+						  
+						  <div class="control-group">
+							<label class="control-label">联系方式</label>
+							<div class="controls">
+							  	<input class="input-xlarge" type="text" value="{{ user.phone }}" name="phone"/>
+							</div>
+						  </div>
+						  
+						
+						  <div class="form-actions">
+							<button type="submit" class="btn btn-primary">保存</button>
+							<button class="btn" onclick ="return httpRedirectAjax('{% url account_index %}')">取消</button>
+						  </div>
+						</fieldset>
+					  </form>
+				
+				</div>
+			</div><!--/span-->
+		
+		</div><!--/row-->
+<!-- content ends -->
+
+<script language="JavaScript" type="text/javascript">
+
+//----------- start ---------------
+$(document).ready(function(){
+	 //校验
+	 $("form").validate();
+});
+</script>

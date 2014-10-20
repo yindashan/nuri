@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<!-- 加入对静态文件路径的支持 -->
+	{% load static %}
+	
+	<title>应用监控系统</title>
+	<!-- The styles -->
+	<link id="bs-css" href="{% get_static_prefix %}charisma/css/bootstrap-cerulean.css" rel="stylesheet">
+	<style type="text/css">
+	  body {
+		padding-bottom: 40px;
+	  }
+	  .sidebar-nav {
+		padding: 9px 0;
+	  }
+	</style>
+	<link href="{% get_static_prefix %}charisma/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="{% get_static_prefix %}charisma/css/charisma-app.css" rel="stylesheet">
+	<link href="{% get_static_prefix %}charisma/css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
+	<link href='{% get_static_prefix %}charisma/css/fullcalendar.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/fullcalendar.print.css' rel='stylesheet'  media='print'>
+	<link href='{% get_static_prefix %}charisma/css/chosen.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/uniform.default.css' rel='stylesheet'>
+	<!--
+	<link href='{% get_static_prefix %}charisma/css/colorbox.css' rel='stylesheet'>
+	-->
+	<link href='{% get_static_prefix %}charisma/css/jquery.cleditor.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/jquery.noty.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/noty_theme_default.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/elfinder.min.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/elfinder.theme.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/jquery.iphone.toggle.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/opa-icons.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/uploadify.css' rel='stylesheet'>
+	
+	<link href='{% get_static_prefix %}css/datetimebox/bootstrap-datetimepicker.min.css' rel='stylesheet'>
+	
+	<!-- easy UI -->
+	<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}css/easyui/default/easyui.css"/> 
+	<!-- 
+	<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}css/easyui/icon.css"/> 
+	-->
+	<!-- bootstrap-transfer -->
+	<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}css/bootstrap-transfer/bootstrap-transfer.css"/> 
+	<!-- our own code -->
+	<link href='{% get_static_prefix %}css/other.css' rel='stylesheet'>
+	
+
+	
+	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- The fav icon -->
+	<link rel="shortcut icon" href="{% get_static_prefix %}charisma/img/favicon.ico">
+		
+</head>
+
+<body>
+		<!-- topbar starts -->
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" href="{% url common_index %}"> <img alt="Charisma Logo" src="{% get_static_prefix %}charisma/img/logo20.png" /> <span>应用监控</span></a>
+				
+				<!-- theme selector starts -->
+				<div class="btn-group pull-right theme-container"  style="display:none;">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						<i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" id="themes">
+						<li><a data-value="classic" href="#"><i class="icon-blank"></i> Classic</a></li>
+						<li><a data-value="cerulean" href="#"><i class="icon-blank"></i> Cerulean</a></li>
+						<li><a data-value="cyborg" href="#"><i class="icon-blank"></i> Cyborg</a></li>
+						<li><a data-value="redy" href="#"><i class="icon-blank"></i> Redy</a></li>
+						<li><a data-value="journal" href="#"><i class="icon-blank"></i> Journal</a></li>
+						<li><a data-value="simplex" href="#"><i class="icon-blank"></i> Simplex</a></li>
+						<li><a data-value="slate" href="#"><i class="icon-blank"></i> Slate</a></li>
+						<li><a data-value="spacelab" href="#"><i class="icon-blank"></i> Spacelab</a></li>
+						<li><a data-value="united" href="#"><i class="icon-blank"></i> United</a></li>
+					</ul>
+				</div>
+				<!-- theme selector ends -->
+				
+				<!-- user dropdown starts -->
+				<div class="btn-group pull-right" >
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						<i class="icon-user"></i><span class="hidden-phone">{{ user.username }}</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<!--
+						<li><a href="#">Profile</a></li>
+						-->
+						<li><a href="#">{{ user.roles }}</a></li>
+						<li class="divider"></li>
+						<li><a href="{% url common_logout %}">Logout</a></li>
+					</ul>
+				</div>
+				<!-- user dropdown ends -->
+				
+				<div class="top-nav nav-collapse">
+					<ul class="nav switch_tabs">
+						<li><a href="{% url common_index %}"><span style="font-size:15px">系统管理&配置管理</span></a></li>
+						<li><a href="{% url shownode_businessview %}" target="_blank"><span style="font-size:15px">显示视图</span></a></li>
+					</ul>
+				</div><!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
+	<!-- topbar ends -->
+		<div class="container-fluid">
+		<div class="row-fluid">
+				
+			<!-- left menu starts -->
+			<div class="span2 main-menu-span">
+				<div class="well nav-collapse sidebar-nav" id ="song">
+					<ul class="nav nav-tabs nav-stacked main-menu">
+
+						<li class="nav-header hidden-tablet">配置管理</li>
+						<li><a class="ajax-link" href="{% url business_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 业务线管理</span></a></li>
+						<li><a class="ajax-link" href="{% url appitem_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 应用项管理</span></a></li>
+						{% if "monitor_manage" in auth_set %}
+						        <li><a class="ajax-link" href="{% url monitoritem_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 监控项管理</span></a></li>
+						 {% endif %}
+						{% if "monitor_index_operate" in auth_set %}
+						         <li><a class="ajax-link" href="{% url monitorindex_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 监控指数管理</span></a></li>
+						 {% endif %}
+						 <li><a class="ajax-link" href="{% url hostgroup_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 主机组管理</span></a></li>
+						{% if "sync_redis" in auth_set %}
+						         <li><a class="ajax-link" href="{% url redissync_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 同步redis</span></a></li>
+						 {% endif %}
+						 {% if "host_change" in auth_set %}
+						         <li><a class="ajax-link" href="{% url chgconfig_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 主机变更</span></a></li>
+						   {% endif %}
+						   {% if "host_survive" in auth_set %}
+						           <li><a class="ajax-link" href="{% url hostalive_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 主机存活检查</span></a></li>
+						   {% endif %}
+						
+   <li ><a  class="ajax-link"  href="{% url showhostalive_index %}" target="_blank"  id="showhostalive"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 主机存活展示</span></a></li>
+						<li class="nav-header hidden-tablet">主动监控</li>
+						<li><a class="ajax-link" href="{% url urlinfo_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> URL监控</span></a></li>
+						<li><a class="ajax-link" href="{% url tcpinfo_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> TCP监控</span></a></li>
+						<li><a class="ajax-link" href="{% url nocip_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 机房IP对应信息</span></a></li>
+						
+						<li class="nav-header hidden-tablet">其他</li>
+						<li><a class="ajax-link" href="{% url showchart_quickshow %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 快速查看(应用项)</span></a></li>
+						<li><a class="ajax-link" href="{% url showchart_hostquickshow %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 快速查看(主机)</span></a></li>
+						<li><a class="ajax-link" href="{% url message_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 消息展示</span></a></li>	
+						<li><a class="ajax-link" href="{% url notification_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 报警通知展示</span></a></li>
+						<li><a class="ajax-link" href="{% url notification_hindex %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 主机事件通知</span></a></li>
+						{% if  "host_health" in auth_set %}
+						         <li><a class="ajax-link" href="{% url monitorindex_watch %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 健康指数查看</span></a></li>		
+						{% endif %}			
+						{% if  "host_hard_exp" in auth_set %}
+					         	<li><a class="ajax-link" href="{% url hardware_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 主机硬件信息导出</span></a></li>
+					    {% endif %}
+						<li class="nav-header hidden-tablet">系统管理</li>
+						{% if "user_manage" in auth_set %}
+							<li><a class="ajax-link" href="{% url account_index %}" onclick="return executeMenu(this,true);"> <i class="icon-chevron-right"></i><span class="hidden-tablet"> 用户管理</span></a></li>
+						{% endif %}
+						{% if "role_manage" in auth_set %}
+							<li><a class="ajax-link" href="{% url role_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 角色管理</span></a></li>
+						{% endif %}
+						
+						<li><a class="ajax-link" href="{% url log_index %}" onclick="return executeMenu(this,true);"><i class="icon-chevron-right"></i><span class="hidden-tablet"> 日志信息</span></a></li>
+					</ul>
+				</div><!--/.well -->
+			</div><!--/span-->
+			<!-- left menu ends -->
+			
+			<noscript>
+				<div class="alert alert-block span10">
+					<h4 class="alert-heading">Warning!</h4>
+					<p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+				</div>
+			</noscript>
+			
+			<div id="content" class="span10">
+			<!-- content starts -->
+				欢迎使用应用监控系统.
+
+
+		  
+       
+			<!-- content ends -->
+			</div><!--/#content.span10-->
+				</div><!--/fluid-row-->
+				
+			<!-- 历史URL -->
+			<input type="hidden" id="hide_history_url" value=""/>
+				
+		<hr>
+
+		<footer>
+			<p class="pull-left">&copy; 2013 Autonavi 高德软件　运维技术部</p>
+			<p class="pull-right">Powered by: zhu.wei</p>
+		</footer>
+		
+	</div><!--/.fluid-container-->
+
+	<!-- external javascript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+
+	<!-- jQuery -->
+	<script src="{% get_static_prefix %}charisma/js/jquery-1.7.2.min.js"></script>
+	<!-- jQuery UI -->
+	<!--
+	<script src="{% get_static_prefix %}charisma/js/jquery-ui-1.8.21.custom.min.js"></script>
+	-->
+	<script type="text/javascript" src="{% get_static_prefix %}js/jquery-ui/jquery-ui-1.10.3.min.js"></script>
+	
+	<!-- transition / effect library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-transition.js"></script>
+	<!-- alert enhancer library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-alert.js"></script>
+	<!-- modal / dialog library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-modal.js"></script>
+	<!-- custom dropdown library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-dropdown.js"></script>
+	<!-- scrolspy library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-scrollspy.js"></script>
+	<!-- library for creating tabs -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-tab.js"></script>
+	<!-- library for advanced tooltip -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-tooltip.js"></script>
+	<!-- popover effect library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-popover.js"></script>
+	<!-- button enhancer library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-button.js"></script>
+	<!-- accordion library (optional, not used in demo) -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-collapse.js"></script>
+	<!-- carousel slideshow library (optional, not used in demo) -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-carousel.js"></script>
+	<!-- autocomplete library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-typeahead.js"></script>
+	<!-- tour library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-tour.js"></script>
+	<!-- library for cookie management -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.cookie.js"></script>
+	<!-- calander plugin -->
+	<script src='{% get_static_prefix %}charisma/js/fullcalendar.min.js'></script>
+	<!-- data table plugin 
+	
+	<script src='{% get_static_prefix %}charisma/js/jquery.dataTables.js'></script>
+	-->
+	<script src='{% get_static_prefix %}js/datatable/jquery.dataTables.js'></script>
+
+	<!-- chart libraries start -->
+	<script src="{% get_static_prefix %}charisma/js/excanvas.js"></script>
+	<script src="{% get_static_prefix %}charisma/js/jquery.flot.min.js"></script>
+	<script src="{% get_static_prefix %}charisma/js/jquery.flot.pie.js"></script>
+	<script src="{% get_static_prefix %}charisma/js/jquery.flot.stack.js"></script>
+	<script src="{% get_static_prefix %}charisma/js/jquery.flot.resize.min.js"></script>
+	<!-- chart libraries end -->
+
+	<!-- select or dropdown enhancer -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.chosen.min.js"></script>
+	<!-- checkbox, radio, and file input styler -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.uniform.min.js"></script>
+	<!-- plugin for gallery image view -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.colorbox.min.js"></script>
+	<!-- rich text editor library -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.cleditor.min.js"></script>
+	<!-- notification plugin -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.noty.js"></script>
+	<!-- file manager library -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.elfinder.min.js"></script>
+	<!-- star rating plugin -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.raty.min.js"></script>
+	<!-- for iOS style toggle switch -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.iphone.toggle.js"></script>
+	<!-- autogrowing textarea plugin -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.autogrow-textarea.js"></script>
+	<!-- multiple file upload plugin -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.uploadify-3.1.min.js"></script>
+	<!-- history.js for cross-browser state change on ajax -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.history.js"></script>
+	<!-- application script for Charisma demo -->
+	<script src="{% get_static_prefix %}charisma/js/charisma.js"></script>
+	
+	<!-- easyui -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/easyui/jquery.parser.js"></script>
+	<script type="text/javascript" src="{% get_static_prefix %}js/easyui/jquery.draggable.js"></script>
+	<script type="text/javascript" src="{% get_static_prefix %}js/easyui/jquery.tree.js"></script>
+	<script type="text/javascript" src="{% get_static_prefix %}js/easyui/jquery.menu.js"></script>
+	
+	<!-- datetime box -->
+    <script src="{% get_static_prefix %}js/datetimebox/bootstrap-datetimepicker.min.js" ></script>   
+     
+    <!-- hashchange 事件 -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/haschange/jquery.ba-hashchange.min.js"></script>
+    
+    <!-- bootstrap transfer -->
+    <script type="text/javascript" src="{% get_static_prefix %}js/bootstrap-transfer/bootstrap-transfer.js"></script>
+	
+	<!-- jquery 校验插件 -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/jquery.validate.js"></script>
+	
+	<!-- our own code -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/tools/csrf.js" charset="utf-8"></script>   <!-- csrf token-->
+	<!-- 通用的 ajax 操作 -->
+	<script src="{% get_static_prefix %}js/common_ajax.js" charset="utf-8"></script>
+	<script type="text/javascript" src="{% get_static_prefix %}js/tools/validateExtend.js" charset="utf-8"></script> <!-- 扩展jquery validate-->
+	<script type="text/javascript" src="{% get_static_prefix %}js/tools/tree_extend.js" charset="utf-8"></script>   <!-- 扩展easyui tree-->
+	<script type="text/javascript" src="{% get_static_prefix %}js/tools/utility.js" charset="utf-8"></script> <!-- 工具函数 字符串去空格等等 -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/tools/str_date.js" charset="utf-8"></script>   <!-- JS Date和str互相转换-->
+	<script type="text/javascript" src="{% get_static_prefix %}js/flot_chart.js" charset="utf-8"></script> <!-- 画图 -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/op_tree.js" charset="utf-8"></script> <!-- 对业务视图的树中节点进行操作 -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/other_ajax.js" charset="utf-8"></script> <!-- 其它的ajax -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/host_group.js" charset="utf-8"></script> <!-- 主机组的ajax -->
+
+	<script language="JavaScript" type="text/javascript">
+		$(document).ready(function(){
+			if ( $.browser.msie ) { // if IE and version is greater 9
+			    if($.browser.version > 9)
+			    $('.modal').removeClass('fade');
+			}
+			 
+			 // 锚点变更事件
+			 $(window).hashchange(hashChangeFire);
+			 
+		});
+	</script>
+</body>
+</html>

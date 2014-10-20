@@ -1,0 +1,37 @@
+<!-- content starts -->	
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">配置管理</a> <span class="divider">/</span>
+			</li>
+			<li>
+				<a href="#">Redis 同步</a>
+			</li>
+		</ul>
+	</div>
+	<div class="row-fluid sortable">
+		<div class="box span12">
+			<div class="box-header well" data-original-title>
+				<h2><i class="icon-list"></i> Redis 同步 </h2>
+			</div>
+			<div class="box-content" id="box-content">
+				<form action="{% url redis_sync %}" id="search_form"  onsubmit="return searchCallback();">
+					<fieldset>
+					<div class="control-group">
+						<div class="controls">
+							<p class="lead">“redis同步”操作会将数据库中的配置信息同步到redis</p>
+						</div>
+					</div>
+					<div class="control-group">
+
+						<div class="controls">
+							<button type="submit" class="btn btn-small btn-info" ><i class="icon-refresh icon-white"></i>  Redis 同步</button>
+						</div>
+						
+					</div>			
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>	
+<!-- content ends -->

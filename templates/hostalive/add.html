@@ -1,0 +1,134 @@
+<!-- content starts -->	
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">主机存活性检查</a> <span class="divider">/</span>
+			</li>
+			<li>
+				<a href="#">创建标准</a>
+			</li>
+		</ul>
+	</div>
+	
+	
+	<div class="row-fluid sortable">
+			<div class="box span12">
+				<div class="box-header well" data-original-title>
+					<h2><i class="icon-edit"></i> 创建标准</h2>
+				</div>
+				<div class="box-content">
+					<form class="form-horizontal" method="post" action="{% url hostalive_add %}" onsubmit="return validateCallback(this);">
+						<fieldset>
+						<div class="control-group">
+							<label class="control-label">名称<span style="color:#f00">*</span></label>
+							<div class="controls">
+								<input class="input-xlarge required" type="text" name="name"/>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">最大重试次数</label>
+							<div class="controls">
+								  <label class="radio inline">
+									<input type="radio" name="retry_count" value="1"/>
+									1次
+								  </label>
+								  
+								  <label class="radio inline">
+									<input type="radio" name="retry_count" value="2" checked/>
+									2次
+								  </label>
+								  
+								  <label class="radio inline">
+									<input type="radio" name="retry_count" value="3"/>
+									3次
+								  </label>
+							</div>
+						 </div>
+						 <div class="control-group">
+							<label class="control-label">通知间隔</label>
+							<div class="controls">
+								  <label class="radio inline">
+									<input type="radio" name="notify_interval" value="1"/>
+									不限
+								  </label>
+								  
+								  <label class="radio inline">
+									<input type="radio" name="notify_interval" value="10" />
+									10分钟
+								  </label>
+								  
+								  <label class="radio inline">
+									<input type="radio" name="notify_interval" value="60" checked/>
+									1小时
+								  </label>
+								  
+								  <label class="radio inline">
+									<input type="radio" name="notify_interval" value="360"/>
+									6小时
+								  </label>
+								  <i class="icon-question-sign" data-toggle="tooltip" data-original-title="如果当前时间减去上次报警时间小于此值,则不报警"></i>
+							</div>
+						 </div>
+						 
+						  <div class="control-group">
+							<label class="control-label">备注<span style="color:#f00">*</span></label>
+							<div class="controls">
+							  <input class="input-xlarge required" type="text" name="comment"/>
+							</div>
+						  </div>
+						  
+					  	  <div class="control-group">
+							<label class="control-label">规则</label>
+							<div class="controls">
+							  	{% for rule in rule_list %}
+							  		<label class="checkbox inline">
+										<input type="checkbox" name="rules" value="{{ rule.id }}"/>
+										{{ rule.name }}
+									</label>
+								{% endfor %}
+							</div>
+						  </div>
+						 <div class="control-group">
+							<label class="control-label">IP地址列表<span style="color:#f00">*</span></label>
+							<div class="controls">
+								<textarea name="ip_list" class="required iplist textarea_std"></textarea>
+								<i class="icon-question-sign" data-toggle="tooltip" data-original-title="IP地址列表，以逗号分隔,例:192.168.1.100,192.168.1.120"></i>
+							</div>
+						 </div>
+						 
+						 <div class="control-group">
+							<label class="control-label">邮件报警联系地址列表</label>
+								<div class="controls">
+									<textarea name="email_list" class="emaillist textarea_std"></textarea>
+								</div>
+						 </div>
+						 <div class="control-group">
+							<label class="control-label">报警短信联系列表</label>
+								<div class="controls">
+									<textarea name="mobile_list" class="mobilelist textarea_std"></textarea>
+								</div>
+						 </div>
+						
+						  <div class="form-actions">
+							<button type="submit" class="btn btn-primary">保存</button>
+							<button class="btn" onclick ="return httpRedirectAjax('{% url hostalive_index %}')">取消</button>
+						  </div>
+						</fieldset>
+					  </form>
+				
+				</div>
+			</div><!--/span-->
+		
+		</div><!--/row-->
+<!-- content ends -->
+
+<script language="JavaScript" type="text/javascript">
+
+//----------- start ---------------
+$(document).ready(function(){
+	 //校验
+	 $("form").validate();
+	 // 初始化 tooltip
+	 $('.icon-question-sign').tooltip();
+});
+</script>

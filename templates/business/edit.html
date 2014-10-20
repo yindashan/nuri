@@ -1,0 +1,101 @@
+
+<!-- content starts -->	
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">配置管理</a> <span class="divider">/</span>
+			</li>
+			<li>
+				<a href="#">业务线管理</a>
+			</li>
+		</ul>
+	</div>
+	
+	<div class="row-fluid sortable">
+			<div class="box span12">
+				<div class="box-header well" data-original-title>
+					<h2><i class="icon-edit"></i> 编辑业务线</h2>
+				</div>
+				<div class="box-content">
+					<form class="form-horizontal" method="post" action="{% url business_edit business.id %}" onsubmit="return validateCallback(this);">
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">业务线名称<span style="color:#f00">*</span></label>
+								<div class="controls">
+									<input class="input-xlarge required" type="text" name="bl_name" value="{{business.name}}"/>
+								</div>
+							</div>
+						
+							<div class="control-group">
+								<label class="control-label">运维接口人<span style="color:#f00">*</span></label>
+								<div class="controls">
+									<input class="input-xlarge required" type="text" name="op_interface" value="{{business.op_interface}}"/>
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label">运维接口人电话<span style="color:#f00">*</span></label>
+								<div class="controls">
+									<input class="input-xlarge required" type="text" name="op_phone" value="{{business.op_phone}}"/>
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label">业务接口人<span style="color:#f00">*</span></label>
+								<div class="controls">
+									<input class="input-xlarge required" type="text" name="bn_interface" value="{{business.bn_interface}}"/>
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label">业务接口人电话<span style="color:#f00">*</span></label>
+								<div class="controls">
+									<input class="input-xlarge required" type="text" name="bn_phone" value="{{business.bn_phone}}"/>
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label">关联应用</label>
+								<div class="controls">
+									<select multiple class="required" name="rel_app" id="rel_app">
+										{% for app in app_list %}
+							      			<option value ="{{ app.id }}"
+								      			{% if app.id in selected_id_list %}
+								      				selected
+								      			{% endif %}
+							      			>{{ app.app_name }}</option>
+							      		{% endfor %}
+									</select>
+								</div>
+							</div>
+						  
+							 <div class="control-group">
+								<label class="control-label">备注</label>
+									<div class="controls">
+										<textarea name="comment" class="textarea_std">"{{business.comment}}"</textarea>
+									</div>
+							 </div>
+						
+							  <div class="form-actions">
+								<button type="submit" class="btn btn-primary">保存</button>
+								<button class="btn" onclick ="return httpRedirectAjax('{% url business_index %}')">取消</button>
+							  </div>
+						</fieldset>
+					  </form>
+				
+				</div>
+			</div><!--/span-->
+		
+		</div><!--/row-->
+<!-- content ends -->
+
+<script language="JavaScript" type="text/javascript">
+
+//----------- start ---------------
+$(document).ready(function(){
+	 //校验
+	 $("form").validate();
+	 // 关联应用
+	　$("#rel_app").chosen({no_results_text: "没有找到",search_contains:true}); 
+});
+</script>

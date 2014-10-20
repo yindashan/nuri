@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<!-- 加入对静态文件路径的支持 -->
+	{% load static %}
+	
+	<title>应用监控系统</title>
+	<!-- The styles -->
+	<link id="bs-css" href="{% get_static_prefix %}charisma/css/bootstrap-cerulean.css" rel="stylesheet">
+	<style type="text/css">
+	  body {
+		padding-bottom: 40px;
+	  }
+	  .sidebar-nav {
+		padding: 9px 0;
+	  }
+	</style>
+	<link href="{% get_static_prefix %}charisma/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="{% get_static_prefix %}charisma/css/charisma-app.css" rel="stylesheet">
+	<link href="{% get_static_prefix %}charisma/css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
+	<link href='{% get_static_prefix %}charisma/css/fullcalendar.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/fullcalendar.print.css' rel='stylesheet'  media='print'>
+	<link href='{% get_static_prefix %}charisma/css/chosen.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/uniform.default.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/colorbox.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/jquery.cleditor.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/jquery.noty.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/noty_theme_default.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/elfinder.min.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/elfinder.theme.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/jquery.iphone.toggle.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/opa-icons.css' rel='stylesheet'>
+	<link href='{% get_static_prefix %}charisma/css/uploadify.css' rel='stylesheet'>
+	
+	<link href='{% get_static_prefix %}css/datetimebox/bootstrap-datetimepicker.min.css' rel='stylesheet'>
+	
+	<!-- easy UI -->
+	<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}css/easyui/default/easyui.css"/> 
+	<!-- 
+	<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}css/easyui/icon.css"/> 
+	-->
+	<!-- our own code -->
+	<link href='{% get_static_prefix %}css/other.css' rel='stylesheet'>
+	
+
+	
+	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- The fav icon -->
+	<link rel="shortcut icon" href="{% get_static_prefix %}charisma/img/favicon.ico">
+		
+</head>
+
+<body>
+		<!-- topbar starts -->
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" href="{% url common_index %}"> <img alt="Charisma Logo" src="{% get_static_prefix %}charisma/img/logo20.png" /> <span>应用监控</span></a>
+				
+				<!-- theme selector starts -->
+				<div class="btn-group pull-right theme-container"  style="display:none;">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						<i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" id="themes">
+						<li><a data-value="classic" href="#"><i class="icon-blank"></i> Classic</a></li>
+						<li><a data-value="cerulean" href="#"><i class="icon-blank"></i> Cerulean</a></li>
+						<li><a data-value="cyborg" href="#"><i class="icon-blank"></i> Cyborg</a></li>
+						<li><a data-value="redy" href="#"><i class="icon-blank"></i> Redy</a></li>
+						<li><a data-value="journal" href="#"><i class="icon-blank"></i> Journal</a></li>
+						<li><a data-value="simplex" href="#"><i class="icon-blank"></i> Simplex</a></li>
+						<li><a data-value="slate" href="#"><i class="icon-blank"></i> Slate</a></li>
+						<li><a data-value="spacelab" href="#"><i class="icon-blank"></i> Spacelab</a></li>
+						<li><a data-value="united" href="#"><i class="icon-blank"></i> United</a></li>
+					</ul>
+				</div>
+				<!-- theme selector ends -->
+				
+				<!-- user dropdown starts -->
+				<div class="btn-group pull-right" >
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						<i class="icon-user"></i><span class="hidden-phone">{{ user.username }}</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<!--
+						<li><a href="#">Profile</a></li>
+						-->
+						<li><a href="#">{{ user.roles }}</a></li>
+						<li class="divider"></li>
+						<li><a href="{% url common_logout %}">Logout</a></li>
+					</ul>
+				</div>
+				<!-- user dropdown ends -->
+				
+				<div class="top-nav nav-collapse">
+					<ul class="nav switch_tabs">
+						<li><a href="{% url common_index %}"><span style="font-size:15px">系统管理&amp;配置管理</span></a></li>
+						<li><a href="{% url shownode_businessview %}"><span style="font-size:15px">显示视图</span></a></li>
+					</ul>
+				</div><!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
+	<!-- topbar ends -->
+		<div class="container-fluid">
+			<div class="row-fluid">
+			
+				<!-- left menu starts -->
+				<div class="span2 main-menu-span" >
+					<div class="well nav-collapse sidebar-nav" style="overflow-x:auto;">
+						<ul id="show_tree"></ul>  
+					</div><!--/.well -->
+				</div><!--/span-->
+				<!-- left menu ends -->
+				
+				<noscript>
+					<div class="alert alert-block span10">
+						<h4 class="alert-heading">Warning!</h4>
+						<p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+					</div>
+				</noscript>
+			
+				<div id="content" class="span10">
+					<!-- content starts -->
+						{% if not chart_list and not combine_list %}
+						        <p>没有选中任何节点或此节点没有对应的图表</p>
+						{% endif %}
+				
+						<!-- chart_type:图表类型 0:'单数据源曲线图',1:'多数据源曲线图',2:'饼图',3:'柱形图' ,show_type:展示的时间区间 1:'4小时',2:'1天',3:'1个月',4:'1年' -->
+						<div class="row-fluid">
+							<!-- 单数据源图表 --->
+							{% for chart in chart_list %}
+							
+							<div class="box">
+								<div class="box-header well">
+									<h2><i class="icon-list-alt"></i></h2>
+									<div class="box-icon">
+										<a href="#" class="btn btn-chart-search btn-round"><i class="icon-search"></i></a>
+										<a href="#" class="btn btn-precise-data btn-round"><i class="icon-road"></i></a>
+										<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+										<a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+									</div>
+								</div>
+								<div class="box-content">
+			                  		<div class="center flotchart" style="height:300px" id="{{ chart.id }}" chart_type="0" host_ip="{{ chart.host_ip }}" 
+			                  		app_name="{{ chart.app_name }}"  monitor_item_id="{{ chart.monitor_item_id }}" show_type="{{ chart.show_type }}"
+			                  		desc="{{ chart.desc }}" warning_type="{{ chart.warning_type }}"  warning="{{ chart.warning }}"
+			                  		warning_min="{{ chart.warning_min }}" warning_max="{{ chart.warning_max }}" critical_type="{{ chart.critical_type }}"
+			                  		critical="{{ chart.critical }}" critical_min="{{ chart.critical_min }}" critical_max="{{ chart.critical_max }}"></div>            
+			                  	</div>
+							</div><!--/box-->
+							
+							{% endfor %}
+						</div> <!--/row-->
+										
+						<!-- 多数据源图表 --->
+						{% for chart in combine_list %}
+						
+							<div class="box">
+								<div class="box-header well">
+									<h2><i class="icon-list-alt"></i></h2>
+									<div class="box-icon">
+										<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+										<a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+									</div>
+								</div>
+								<div class="box-content">
+			                  		<div class="center flotchart" style="height:300px" id="{{ chart.canvas_id }}"  
+			                  		chart_type="{{ chart.chart_type }}" show_type="{{ chart.show_type }}" desc="{{ chart.desc }}"
+			                  		chart_ids = "{{ chart.chart_ids }}" keys_desc="{{ chart.keys_desc }}" ></div>            
+			                  	</div>
+							</div><!--/box-->
+							
+						{% endfor %}
+	
+				<!-- content ends -->
+				</div><!--/#content.span10-->
+				
+			</div>
+			<!--/fluid-row-->
+		<hr/>
+		
+		<!-- 配置节点关联图表的面板 node_div -->
+		<div class="modal hide fade" id="node_div">
+			<div class="modal-header">
+				<button type="button" class="close node_cancel">×</button>
+				<h3>配置节点</h3>
+			</div>
+			<div class="modal-body">
+					<fieldset class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label">节点名称<span style="color:#f00">*</span></label>
+							<div class="controls">
+								<input class="input-xlarge required" type="text" id="curr_node"/>
+							</div>
+						</div>
+					</fieldset>
+					<!-- 待选单数据源曲线图 -->
+					<fieldset class="form-horizontal">
+						<legend>待选图表</legend>
+						<div class="control-group">
+							<label class="control-label">应用名称</label>
+							<div class="controls">
+								<select single name="app" id="app">
+									<option value ="" selected>请选择</option>
+									{% for app in app_list %}
+						      			<option value ="{{ app.id }}">{{ app.desc }}</option>
+						      		{% endfor %}
+								</select>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">主机</label>
+							<div class="controls">
+								<select single name="host" id="host">
+									<option value ="" selected>请选择</option>
+								</select>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">监控项</label>
+							<div class="controls">
+								<select single id="monitor">
+									<option value ="" selected>请选择</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-actions">
+							<button type="button" class="btn btn-primary" id="chart_add">添加</button>
+						</div>
+					</fieldset>	
+					<!-- 已选单数据源曲线图 -->
+					<fieldset class="form-horizontal">
+						<legend>已选图表</legend>
+						<table class="table table-striped table-bordered bootstrap-datatable datatable" id="node_table">
+							<thead>
+								<tr>
+									<th>应用名称</th>
+									<th>主机</th>
+									<th>监控项</th>
+									<th>操作</th>
+								</tr>
+							</thead>   
+							<tbody>
+							</tbody>
+						</table>
+					</fieldset>	
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="node_confirm">确定</button>
+				<button type="button" class="btn node_cancel">取消</button>
+			</div>
+		</div>
+
+		<footer>
+			<p class="pull-left">&copy; 2013 Autonavi 高德软件　运维技术部</p>
+			<p class="pull-right">Powered by: zhu.wei</p>
+			
+			
+			<!-- 记录当前正在被操作的节点 -->
+			<input type="hidden" id="hide_id" value=""/>
+			<!-- 当前对业务树执行的动作 -->
+			<input type="hidden" id="hide_action" value=""/>
+			<!-- 正在操作的图表 -->
+			<input type="hidden" id="hide_chartid" value=""/>
+			
+			<!--　右键菜单 -->
+			<div id="mm"  class="easyui-menu" style="width:120px;" >  
+				<div id="add" data-options="iconCls:'icon-plus'">创建子节点</div>
+				<div id="update" data-options="iconCls:'icon-edit'">编辑</div>
+				<div id="remove" data-options="iconCls:'icon-remove'">删除</div>
+				<div class="menu-sep"></div>
+				<div >退出</div>  
+			</div＞
+			
+		</footer>
+		
+	</div><!--/.fluid-container-->
+	
+	<!-- external javascript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+
+	<!-- jQuery -->
+	<script src="{% get_static_prefix %}charisma/js/jquery-1.7.2.min.js"></script>
+	<!-- jQuery UI -->
+	<!--
+	<script src="{% get_static_prefix %}charisma/js/jquery-ui-1.8.21.custom.min.js"></script>
+	-->
+	<script type="text/javascript" src="{% get_static_prefix %}js/jquery-ui/jquery-ui-1.10.3.min.js"></script>
+	
+	<!-- transition / effect library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-transition.js"></script>
+	<!-- alert enhancer library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-alert.js"></script>
+	<!-- modal / dialog library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-modal.js"></script>
+	<!-- custom dropdown library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-dropdown.js"></script>
+	<!-- scrolspy library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-scrollspy.js"></script>
+	<!-- library for creating tabs -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-tab.js"></script>
+	<!-- library for advanced tooltip -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-tooltip.js"></script>
+	<!-- popover effect library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-popover.js"></script>
+	<!-- button enhancer library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-button.js"></script>
+	<!-- accordion library (optional, not used in demo) -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-collapse.js"></script>
+	<!-- carousel slideshow library (optional, not used in demo) -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-carousel.js"></script>
+	<!-- autocomplete library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-typeahead.js"></script>
+	<!-- tour library -->
+	<script src="{% get_static_prefix %}charisma/js/bootstrap-tour.js"></script>
+	<!-- library for cookie management -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.cookie.js"></script>
+	<!-- calander plugin -->
+	<script src='{% get_static_prefix %}charisma/js/fullcalendar.min.js'></script>
+	<!-- data table plugin -->
+	<script src='{% get_static_prefix %}charisma/js/jquery.dataTables.js'></script>
+
+	<!-- chart libraries start -->
+	<script src="{% get_static_prefix %}charisma/js/excanvas.js"></script>
+	<script src="{% get_static_prefix %}charisma/js/jquery.flot.min.js"></script>
+	<script src="{% get_static_prefix %}charisma/js/jquery.flot.pie.js"></script>
+	<script src="{% get_static_prefix %}charisma/js/jquery.flot.stack.js"></script>
+	<script src="{% get_static_prefix %}charisma/js/jquery.flot.resize.min.js"></script>
+	<!-- chart libraries end -->
+
+	<!-- select or dropdown enhancer -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.chosen.min.js"></script>
+	<!-- checkbox, radio, and file input styler -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.uniform.min.js"></script>
+	<!-- plugin for gallery image view -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.colorbox.min.js"></script>
+	<!-- rich text editor library -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.cleditor.min.js"></script>
+	<!-- notification plugin -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.noty.js"></script>
+	<!-- file manager library -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.elfinder.min.js"></script>
+	<!-- star rating plugin -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.raty.min.js"></script>
+	<!-- for iOS style toggle switch -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.iphone.toggle.js"></script>
+	<!-- autogrowing textarea plugin -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.autogrow-textarea.js"></script>
+	<!-- multiple file upload plugin -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.uploadify-3.1.min.js"></script>
+	<!-- history.js for cross-browser state change on ajax -->
+	<script src="{% get_static_prefix %}charisma/js/jquery.history.js"></script>
+	<!-- application script for Charisma demo -->
+	<script src="{% get_static_prefix %}charisma/js/charisma.js"></script>
+	
+	<!-- easyui -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/easyui/jquery.parser.js"></script>
+	<script type="text/javascript" src="{% get_static_prefix %}js/easyui/jquery.draggable.js"></script>
+	<script type="text/javascript" src="{% get_static_prefix %}js/easyui/jquery.tree.js"></script>
+	<script type="text/javascript" src="{% get_static_prefix %}js/easyui/jquery.menu.js"></script>
+	
+	<!-- datetime box -->
+    <script src="{% get_static_prefix %}js/datetimebox/bootstrap-datetimepicker.min.js" ></script>
+	
+	<!-- jquery 校验插件 -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/jquery.validate.js"></script>
+	
+	<!-- our own code -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/tools/csrf.js" charset="utf-8"></script>   <!-- csrf token-->
+	<!-- 通用的 ajax 操作 -->
+	<script src="{% get_static_prefix %}js/common_ajax.js" charset="utf-8"></script>
+	<script type="text/javascript" src="{% get_static_prefix %}js/tools/validateExtend.js" charset="utf-8"></script> <!-- 扩展jquery validate-->
+	<script type="text/javascript" src="{% get_static_prefix %}js/tools/tree_extend.js" charset="utf-8"></script>   <!-- 扩展easyui tree-->
+	<script type="text/javascript" src="{% get_static_prefix %}js/tools/utility.js" charset="utf-8"></script> <!-- 工具函数 字符串去空格等等 -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/tools/str_date.js" charset="utf-8"></script>   <!-- JS Date和str互相转换-->
+	<script type="text/javascript" src="{% get_static_prefix %}js/flot_chart.js" charset="utf-8"></script> <!-- 画图 -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/op_tree.js" charset="utf-8"></script> <!-- 对业务视图的树中节点进行操作 -->
+	<script type="text/javascript" src="{% get_static_prefix %}js/other_ajax.js" charset="utf-8"></script> <!-- 其它的ajax -->
+
+<script language="JavaScript" type="text/javascript">
+//----------- start ---------------
+$(document).ready(function(){
+	// 加载展示节点对应的json字符串
+	$("#show_tree").tree({  
+		url:'{% url shownode_tree %}',  
+		method:'GET',
+		onClick: clickNode,
+		onContextMenu:open_context_menu
+	});
+	// 点击右键菜单将会触发的动作
+	$("#mm").menu({onClick:context_menu_click});
+	// 关闭节点配置面板
+	$("button.node_cancel").click(clear_node_div); 
+	//下拉框控制
+	$("#app").change(function(){
+		var key = $("#app").val();
+		if(key){
+			 jQuery.ajax({
+				type: 'POST',
+				url: "{% url appitem_getappinfo %}",
+				data: {'app_id':key},
+				success: node_config_success,
+				error:error,
+				dataType: 'json',
+				async:true
+			});
+		}
+	});
+	// 按下chart_add 按钮
+	$("#chart_add").click(chart_add_click);
+	
+	// 按下node_confirm 按钮
+	$("#node_confirm").click(node_confirm_click);
+	
+});
+</script>
+</body>
+</html>

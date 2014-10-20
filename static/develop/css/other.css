@@ -1,0 +1,20 @@
+label.error { 
+color: red; padding-left: 10px;
+}
+.textarea_std{
+width:400px;
+height:100px;
+}
+
+.bold_std {
+	font-weight: bold;
+}
+
+div.innerDetails { 
+	display: none;
+	background-color:#ccc;
+}
+
+.gray_bg{
+	background-color:#ccc;
+}

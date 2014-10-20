@@ -1,0 +1,38 @@
+<table class="table table-striped table-bordered bootstrap-datatable datatable">
+	<thead>
+		<tr>
+			<th>时间</th>
+			<th>主机</th>
+			<th>类型</th>
+			<th>状态</th>
+			<th>信息</th>
+		</tr>
+	</thead>   
+	<tbody>
+		{% for item in notification_list %}
+		<tr>
+			<td>{{ item.time|date:"Y-m-d H:i:s"}}</td>
+			<td>{{ item.host }}</td>
+			<td>{{ item.type }}</td>
+			<td>{{ item.state }}</td>
+       		<td>{{ item.information }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<!-- 展示记录数,上一页，下一页等等 -->
+<div class="row-fluid">
+	<div class="span12">
+		<div class="dataTables_info">显示从{{ notification_list.start_index }}到{{ notification_list.end_index }} 总共{{ notification_list.paginator.count }}条记录</div>
+	</div>
+	<div class="span12 center">
+		<div class="dataTables_paginate paging_bootstrap pagination">
+			<ul currPage="{{ notification_list.number }}" totalPage="{{ notification_list.paginator.num_pages }}" >
+				<li class="prev"><a href="{% url notification_hsearch %}" onclick="return searchPageJump(this);">上一页</a></li>
+				<li><a href="#">{{ notification_list.number }}</a></li>
+				<li class="next"><a href="{% url notification_hsearch %}" onclick="return searchPageJump(this);">下一页</a></li>
+			</ul>
+		</div>
+	</div>
+</div>

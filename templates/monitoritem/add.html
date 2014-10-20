@@ -1,0 +1,254 @@
+<!-- content starts -->	
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">系统管理</a> <span class="divider">/</span>
+			</li>
+			<li>
+				<a href="#">监控项管理</a>
+			</li>
+		</ul>
+	</div>
+	
+	
+	<div class="row-fluid sortable">
+			<div class="box span12">
+				<div class="box-header well" data-original-title>
+					<h2><i class="icon-edit"></i> 编辑监控项</h2>
+				</div>
+				<div class="box-content">
+					<form class="form-horizontal" method="post" action="{% url monitoritem_add %}" onsubmit="return validateCallback(this);">
+						<fieldset>
+						
+						  <div class="control-group">
+							<label class="control-label">描述<span style="color:#f00">*</span></label>
+							<div class="controls">
+							  <input class="input-xlarge required" type="text" value="{{item.desc}}" name="desc"/>
+							</div>
+						  </div>
+						  
+						<div class="control-group">
+							<label class="control-label">监控项所属应用服务</label>
+							<div class="controls">
+								<select single class="required" name="app_id" id="app">
+							      {% for item in app_list %}
+							      	 <option value ="{{item.id}}">{{item.desc}}</option>
+								  {% endfor%}
+								</select>
+							</div>
+						</div>
+						  
+						<div class="control-group">
+							<label class="control-label">类型</label>
+								<div class="btn-group" data-toggle="buttons">
+									<label class="radio inline">
+										&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="monitor_type" value="1" checked="checked"/> 单个变量
+									</label>
+									<label class="radio inline">
+										&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="monitor_type" value="2" /> 计算公式
+									</label>
+								</div>
+						  </div>
+						  
+						<div class="control-group" id="var_div">
+							<label class="control-label">变量名称</label>
+							<div class="controls">
+								<input class="input-xlarge" type="text" name="var_name" />
+								<i class="icon-question-sign" data-toggle="tooltip" 
+								data-original-title="请使用英文字母、数字以及下划线，示例: crash_times"></i>
+							</div>
+						</div>
+						
+						<div class="control-group" id="formula_div" style="display:none">
+							<label class="control-label">计算公式</label>
+							<div class="controls">
+								<textarea name="formula" class="textarea_std"></textarea>
+								<i class="icon-question-sign" data-toggle="tooltip" 
+								data-original-title="示例: $crash_times / $normal_timess"></i>
+							</div>
+						</div>
+						
+						
+						<div class="control-group">
+							<label class="control-label">警告阀值类型</label>
+								<div class="controls">
+									  <label class="radio">
+										<input type="radio" name="warning_type" value="1" checked/>
+										x > w
+									  </label>
+									  <div style="clear:both"></div>
+									  <label class="radio">
+										<input type="radio" name="warning_type" value="2">
+										x < w
+									  </label>
+									  <div style="clear:both"></div>
+									  <label class="radio">
+										<input type="radio" name="warning_type" value="3">
+										w1 <= x <= w2
+									  </label>
+									  <div style="clear:both"></div>
+									  <label class="radio">
+										<input type="radio" name="warning_type" value="4">
+										x < w1 或 x > w2
+									  </label>
+								</div>
+						</div>
+						
+						<div class="control-group" id="w">
+							<label class="control-label">w:</label>
+							<div class="controls">
+								<input class="input-xlarge required" type="text" name="w"/>
+							</div>
+						</div>
+						
+						<div class="control-group" id="w1" style="display:none">
+							<label class="control-label">w1:</label>
+							<div class="controls">
+								<input class="input-xlarge required" type="text" name="w1"/>
+							</div>
+						</div>
+						
+						<div class="control-group" id="w2" style="display:none">
+							<label class="control-label">w2:</label>
+							<div class="controls">
+								<input class="input-xlarge required" type="text" name="w2"/>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label">错误阀值类型</label>
+								<div class="controls">
+									  <label class="radio">
+										<input type="radio" name="critical_type" value="1" checked/>
+										x > c
+									  </label>
+									  <div style="clear:both"></div>
+									  <label class="radio">
+										<input type="radio" name="critical_type" value="2">
+										x < c
+									  </label>
+									  <div style="clear:both"></div>
+									  <label class="radio">
+										<input type="radio" name="critical_type" value="3">
+										c1 <= x <= c2
+									  </label>
+									  <div style="clear:both"></div>
+									  <label class="radio">
+										<input type="radio" name="critical_type" value="4">
+										x < c1 或 x > c2
+									  </label>
+								</div>
+						</div>
+						
+						
+						<div class="control-group" id="c">
+							<label class="control-label">c:</label>
+							<div class="controls">
+								<input class="input-xlarge required" type="text" name="c"/>
+							</div>
+						</div>
+						
+						<div class="control-group" id="c1" style="display:none">
+							<label class="control-label">c1:</label>
+							<div class="controls">
+								<input class="input-xlarge required" type="text" name="c1"/>
+							</div>
+						</div>
+						
+						<div class="control-group" id="c2" style="display:none">
+							<label class="control-label">c2:</label>
+							<div class="controls">
+								<input class="input-xlarge required" type="text" name="c2"/>
+							</div>
+						</div>
+						
+						<div class="form-actions">
+							<button type="submit" class="btn btn-primary">保存</button>
+							<button class="btn" onclick ="return httpRedirectAjax('{% url monitoritem_index %}')">取消</button>
+						</div>
+						</fieldset>
+					  </form>
+				
+				</div>
+			</div><!--/span-->
+		
+		</div><!--/row-->
+<!-- content ends -->
+
+<script language="JavaScript" type="text/javascript">
+	function warn_change(){
+		var warn_value = $('input[type="radio"][name="warning_type"]:checked').val();
+		if(warn_value == '1' || warn_value == '2' ){
+  			$("input[name='w1']").val("");
+  			$("input[name='w2']").val("");
+  			$("#w1").hide();
+  			$("#w2").hide();
+  			$("#w").show();
+  		}else{
+  			$("input[name='w']").val("");
+  			$("#w").hide()
+  			$("#w1").show();
+  			$("#w2").show();
+  		}
+  		$("input:visible").addClass("required");
+  		$("input:hidden").removeClass("required");
+  		// 特殊情况
+  		$("#app_chzn input").removeClass("required");
+	}
+	function critical_change(){
+		var critical_value = $('input[type="radio"][name="critical_type"]:checked').val();
+		 if(critical_value=='1'|| critical_value=='2'){
+  			$("input[name='c1']").val("");
+  			$("input[name='c2']").val("");
+  			$("#c1").hide();
+  			$("#c2").hide();
+  			$("#c").show();
+  			
+  		}else{
+  			$("input[name='c']").val("");
+  			$("#c").hide()
+  			$("#c1").show();
+  			$("#c2").show();
+  		}
+  		$("input:visible").addClass("required");
+  		$("input:hidden").removeClass("required");
+  		// 特殊情况
+  		$("#app_chzn input").removeClass("required");
+	}
+	function monitor_type_change(){
+		//选择监控变量或某个计算公式的结果
+		var monitor_type = $('input[type="radio"][name="monitor_type"]:checked').val();
+  		if(monitor_type=='1' ){
+  			$("#formula_div textarea").val("");
+  			$("#formula_div").hide();
+  			$("#var_div").show();
+  		}else{
+  			$("#var_div input").val("");
+  			$("#var_div").hide();
+  			$("#formula_div").show();
+  		}
+  		$("input:visible,textarea:visible").addClass("required");
+  		$("input:hidden,textarea:hidden").removeClass("required");
+  		// 特殊情况
+  		$("#app_chzn input").removeClass("required");
+	}
+//----------- start ---------------
+$(document).ready(function(){
+	//校验
+	$("form").validate();
+	$("#app").chosen({no_results_text: "没有找到",search_contains:true}); 
+	
+	//选择监控变量或某个计算公式的结果
+	$("input[name='monitor_type']").change(monitor_type_change);
+	
+	//选择警告阀值类型
+	$("input[name='warning_type']").change(warn_change);
+	
+    //选择错误阀值类型
+	$("input[name='critical_type']").change(critical_change);
+	
+	// 初始化 tooltip
+	$('.icon-question-sign').tooltip();
+	
+});
+</script>

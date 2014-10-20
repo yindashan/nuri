@@ -1,0 +1,25 @@
+<!-- chart starts -->
+		<div class="row-fluid display_chart">
+			<!-- 单数据源图表 --->
+			{% for chart in chart_list %}
+			
+				<div class="box ">
+					<div class="box-header well" data-original-title="">
+						<h2><i class="icon-list-alt"></i></h2>
+						<div class="box-icon">
+							<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+							<a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+						</div>
+					</div>
+					<div class="box-content">
+	              		<div class="center flotchart" style="height:300px" chart_title="{{chart.title}}" 
+	              		 start_time="{{chart.start_time}}" end_time="{{chart.end_time}}"
+	              		 alert_line="{{chart.alert_line}}"  data_line="{{chart.data_line}}">
+	              		</div>            
+	              	</div>
+				</div><!--/box-->
+			
+			{% endfor %}
+		</div> <!--/row-->
+						
+<!-- chart ends -->

@@ -1,0 +1,118 @@
+<!-- content starts -->	
+<div class="row-fluid">
+	<div class="box span12">
+		<div class="box-header well" data-original-title="">
+			<h2><i class="icon-edit"></i> 查询IP对应的HOST</h2>
+			<div class="box-icon">
+				<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+				<a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+			</div>
+		</div>
+		<div class="box-content">
+			<form class="form-horizontal" action="{% url chgconfig_ip2host %}" onsubmit="return validateCallbackHtml(this);">
+				<div class="control-group">
+					<label class="control-label">IP</label>
+					<div class="controls">
+						<input class="input-large required ip" type="text" name="ip"/>
+					</div>
+				</div>
+				<div class="form-actions">
+				  	<button type="submit" class="btn btn-primary" >确定</button>
+				</div>
+			</form>   
+
+		</div>
+	</div><!--/span-->
+</div>
+
+<div class="row-fluid">
+	<div class="box span12">
+		<div class="box-header well" data-original-title="">
+			<h2><i class="icon-edit"></i> 查询HOST对应的IP</h2>
+			<div class="box-icon">
+				<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+				<a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+			</div>
+		</div>
+		<div class="box-content">
+			<form class="form-horizontal" action="{% url chgconfig_host2ip %}" onsubmit="return validateCallbackHtml(this);">
+				<div class="control-group">
+					<label class="control-label">HOST_ID</label>
+					<div class="controls">
+						<input class="input-large required host_id" type="text" name="host_id" />
+					</div>
+				</div>
+				<div class="form-actions">
+				  	<button type="submit" class="btn btn-primary" >确定</button>
+				</div>
+			</form>   
+
+		</div>
+	</div><!--/span-->
+</div>
+
+<div class="row-fluid">
+	<div class="box span12">
+		<div class="box-header well" data-original-title="">
+			<h2><i class="icon-edit"></i> IP变更</h2>
+			<div class="box-icon">
+				<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+				<a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+			</div>
+		</div>
+		<div class="box-content">
+			<form class="form-horizontal" action="{% url chgconfig_changeip %}" onsubmit="return validateCallbackHtml(this);">
+				<div class="control-group">
+					<label class="control-label">HOST_ID</label>
+					<div class="controls">
+						<input class="input-large required host_id" type="text" name="host_id" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">原始IP</label>
+					<div class="controls">
+						<input class="input-large required ip" type="text" name="old_ip" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">新IP</label>
+					<div class="controls">
+						<input class="input-large required ip" type="text" name="new_ip" />
+					</div>
+				</div>
+				<div class="form-actions">
+				  	<button type="submit" class="btn btn-primary" >确定</button>
+				</div>
+			</form>   
+
+		</div>
+	</div><!--/span-->
+</div>
+
+<div class="row-fluid">
+	<div class="box span12">
+		<div class="box-header well" data-original-title="">
+			<h2><i class="icon-edit"></i> 主机下线</h2>
+			<div class="box-icon">
+				<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+				<a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+			</div>
+		</div>
+		<div class="box-content">
+			<form class="form-horizontal" action="{% url chgconfig_offline %}" onsubmit="return validateCallbackHtml(this);">
+				<div class="control-group">
+					<label class="control-label">HOST_ID</label>
+					<div class="controls">
+						<input class="input-large required host_id" type="text" name="host_id" />
+					</div>
+				</div>
+				<div class="form-actions">
+				  	<button type="submit" class="btn btn-primary" >确定</button>
+				</div>
+			</form>   
+
+		</div>
+	</div><!--/span-->
+</div>
+
+<!-- content ends -->

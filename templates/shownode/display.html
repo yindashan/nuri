@@ -1,0 +1,58 @@
+<!-- content starts -->	
+<div class="row-fluid">
+	<div class="box span12">
+		<div class="box-header well" data-original-title="">
+			<h2><i class="icon-edit"></i> 设置展示时间</h2>
+			<div class="box-icon">
+				<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+				<a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+			</div>
+		</div>
+		<div class="box-content">
+			<form class="form-horizontal" method="get" action="{% url shownode_getchart %}" onsubmit="return displayCallback(this);">
+				<input type="hidden" name="node_id" value="{{node_id}}"/>
+				<div class="control-group">
+					<label class="control-label">开始时间</label>
+					<div class="controls">
+						<input class="input-large required" type="text" name="start_time" readonly id="start_time"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">结束时间</label>
+					<div class="controls">
+						<input class="input-large required" type="text" name="end_time" readonly id="end_time"/>
+					</div>
+				</div>
+				<div class="form-actions">
+				  
+				  <div class="btn-group" data-toggle="buttons-radio">
+				  	<button type="submit" class="btn btn-primary" id="display_btn">确定</button>
+				  	<button type="submit" class="btn btn-primary time_chk" show_type="1">4小时</button>
+				  	<button type="submit" class="btn btn-primary time_chk" show_type="2">1天</button>
+				  	<button type="submit" class="btn btn-primary time_chk" show_type="3">3天</button>
+				  	<button type="submit" class="btn btn-primary time_chk" show_type="4">1周</button>
+				  	<button type="submit" class="btn btn-primary time_chk" show_type="5">1个月</button>
+				  </div>
+				</div>
+			</form>   
+
+		</div>
+	</div><!--/span-->
+</div>
+<!-- content ends -->
+
+<script language="JavaScript" type="text/javascript">
+//----------- start ---------------
+$(document).ready(function(){
+	// 初始化日期选择
+	$("#start_time,#end_time").datetimepicker({
+        format: "yyyy-mm-dd hh:00",
+        minView: "day"
+    });
+	//选择时间的快捷按钮
+	$(".time_chk").click(show_span_click);
+	$(".time_chk[show_type='2']").click();
+	// 触发一次
+	//$("#display_btn").click();
+});
+</script>

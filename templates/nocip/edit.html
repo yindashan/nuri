@@ -1,0 +1,66 @@
+<!-- content starts -->	
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">主动监控</a> <span class="divider">/</span>
+			</li>
+			<li>
+				<a href="#">机房IP对应信息</a>
+			</li>
+		</ul>
+	</div>
+	
+	
+	<div class="row-fluid sortable">
+			<div class="box span12">
+				<div class="box-header well" data-original-title>
+					<h2><i class="icon-edit"></i> 编辑IP</h2>
+				</div>
+				<div class="box-content">
+					<form class="form-horizontal" method="post" action="{% url nocip_edit nocip.id %}" onsubmit="return validateCallback(this);">
+						<fieldset>
+						  
+						<div class="control-group">
+							<label class="control-label">所属机房</label>
+							<div class="controls">
+								{% for key, value in noc_info_dict.items %}
+									{% ifequal key nocip.nocid %}
+										<span class="input-xlarge uneditable-input">{{ value }}</span>
+									{% endifequal %}
+								{% endfor %}
+							</div>
+						</div>
+						
+						  
+						<div class="control-group">
+							<label class="control-label">IP</label>
+							<div class="controls">
+								<input class="input-xlarge" type="hidden" name="nocid" value="{{ nocip.nocid }}" />
+								<input class="input-xlarge" type="text" name="ip" value="{{ nocip.ip }}" />
+							</div>
+						</div>
+						
+						
+						<div class="form-actions">
+							<button type="submit" class="btn btn-primary">保存</button>
+							<button class="btn" onclick ="return httpRedirectAjax('{% url nocip_index %}')">取消</button>
+						</div>
+						</fieldset>
+					  </form>
+				
+				</div>
+			</div><!--/span-->
+		
+		</div><!--/row-->
+<!-- content ends -->
+
+<script language="JavaScript" type="text/javascript">
+//----------- start ---------------
+$(document).ready(function(){
+	//校验
+	$("form").validate();
+	
+	// 初始化 tooltip
+	$('.icon-question-sign').tooltip();
+});
+</script>

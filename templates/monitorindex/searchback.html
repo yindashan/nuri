@@ -1,0 +1,62 @@
+<table class="table table-striped table-bordered bootstrap-datatable datatable">
+	<thead>
+		<tr>
+			<th>IP</th>
+			<th>主机</th>
+			{% for k, v in monitor_index_dict.items %}
+			<th>{{ v }}</th>
+			{% endfor %}
+			<th nowrap="nowrap">健康指数</th>
+			<th nowrap="nowrap">操作</th>
+		</tr>
+	</thead>   
+	<tbody>
+		{% for item in score_list %}
+		<tr>
+			<td>{{ item.host_ip }}</td>
+			<td>{{ item.host }}</td>
+			{% for k,v in item.index.items %}
+				<td>
+				{% if v == None %}
+					无数据
+				{% elif v < -0.5 %}
+					异常
+				{% else %}
+					{{ v|floatformat:"2" }}
+				{% endif %}
+				</td>
+			{% endfor %}
+			<td nowrap="nowrap" name="score" class="score" id="score-{{ forloop.counter }}">
+				{% if item.score < 0.01 %}
+					<b><font color="red">异常</font></b>
+				{% else %}
+					{{ item.score|floatformat:"2" }}
+				{% endif %}
+			</td>
+			
+			<td nowrap="nowrap">
+				<a class="btn btn-small btn-primary" href="{% url monitorindex_detail item.host,date %}"  onclick="return executeMenu(this);">
+					<i class="icon-zoom-in icon-white"></i>  
+					详细                                           
+				</a>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<!-- 展示记录数,上一页，下一页等等 -->
+<div class="row-fluid">
+	<div class="span12">
+		<div class="dataTables_info">显示从{{ score_list.start_index }}到{{ score_list.end_index }} 总共{{ score_list.paginator.count }}条记录</div>
+	</div>
+	<div class="span12 center">
+		<div class="dataTables_paginate paging_bootstrap pagination">
+			<ul currPage="{{ score_list.number }}" totalPage="{{ score_list.paginator.num_pages }}" >
+				<li class="prev"><a href="{% url monitorindex_search %}" onclick="return searchPageJump(this);">上一页</a></li>
+				<li><a href="#">{{ score_list.number }}</a></li>
+				<li class="next"><a href="{% url monitorindex_search %}" onclick="return searchPageJump(this);">下一页</a></li>
+			</ul>
+		</div>
+	</div>
+</div>

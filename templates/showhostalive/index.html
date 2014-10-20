@@ -1,0 +1,74 @@
+<html>
+<head>
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
+<style type="text/css">
+div#container{width:210px;}
+div#left{height:110px;width:100px;float:left;}
+div#right{background-color:#D9F7ED;height:110px;width:110px;float:left;}
+div#footer {clear:both;text-align:center;width:210px;height:20px;}
+
+li{list-style:none;}
+</style>
+</head>
+
+<body >
+{% load static %}
+<ul class="nav nav-tabs">
+  <li><a href="#">首页</a></li>
+  <li><a href="#">业务图表统计</a></li>
+  <li><a href="#">刷新</a></li>
+</ul>
+<div  class="alert alert-info">
+        <h2 align="center">
+	<span class="label label-primary">
+	共{{length}}台主机
+	{{len_down}}台宕机</span>
+	</span>
+	</h2>
+</div>
+
+
+{% for item in list_host_alive %}
+
+<div  style="float:left;padding:25;">
+		<div id="left">
+        	      &nbsp;  <span class="label label-danger">{{item.0}}</span></br>
+        		<img  hspace=5 src="{% get_static_prefix %}img/server1.png" width=75 height=85 class="img-rounded"></img>
+ 	        </div>  
+		
+
+        	<div  id="right">
+                	<ul  style="margin:0;padding:0;">
+                                {% for i in item %}
+				{% if not forloop.first and not forloop.last %}
+        	 			<li style="font-size:5px;line-height:17px;"><span class="glyphicon glyphicon-wrench"></span>
+<font size="1.5" color="#817B7B" >{{i}}</font><br/></front>
+				{% endif %}
+				{% endfor %}
+           	        </ul>
+        	</div>
+		
+		{% for i in item %}
+    		{% if forloop.last %}
+		<div id="footer">
+        	<font size="3"><span class="label label-primary">{{i}}</span></font>
+		</div>
+		{% endif %}
+     		{% endfor %}
+</div>
+
+{% endfor %}
+
+<script language="JavaScript">
+function myrefresh()
+{
+window.location.reload();
+}
+setTimeout('myrefresh()',1000*60)
+
+<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+</script>
+</body>
+
+</html>

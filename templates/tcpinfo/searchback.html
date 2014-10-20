@@ -1,0 +1,50 @@
+<table class="table table-striped table-bordered bootstrap-datatable datatable">
+	<thead>
+		<tr>
+			<th>主键</th>
+			<th>应用名称</th>
+			<th>应用描述</th>
+			<th>PORT</th>
+			<th>响应时间</th>
+			<th>操作</th>
+		</tr>
+	</thead>   
+	<tbody>
+		{% for tcpinfo in tcpinfos %}
+		<tr>
+			<td>{{ tcpinfo.id }}</td>
+			<td>{{ tcpinfo.app.app_name }}</td>
+			<td>{{ tcpinfo.app.desc }}</td>
+			<td>{{ tcpinfo.port }}</td>
+			<td>{{ tcpinfo.responsetime }}</td>
+			
+			<td class="center ">
+				<a class="btn btn-small btn-primary" href="{% url tcpinfo_edit tcpinfo.id %}"  onclick="return executeMenu(this);">
+					<i class="icon-edit icon-white"></i>  
+					编辑                                           
+				</a>
+				<a class="btn btn-small btn-danger" href="{% url tcpinfo_delete tcpinfo.id %}" onclick="return executeDelete(this);" title="您确定要删除该项吗?">
+					<i class="icon-trash icon-white"></i> 
+					删除
+				</a>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<!-- 展示记录数,上一页，下一页等等 -->
+<div class="row-fluid">
+	<div class="span12">
+		<div class="dataTables_info">显示从{{ tcpinfos.start_index }}到{{ tcpinfos.end_index }} 总共{{ tcpinfos.paginator.count }}条记录</div>
+	</div>
+	<div class="span12 center">
+		<div class="dataTables_paginate paging_bootstrap pagination">
+			<ul currPage="{{ tcpinfos.number }}" totalPage="{{ tcpinfos.paginator.num_pages }}" >
+				<li class="prev"><a href="{% url tcpinfo_search %}" onclick="return searchPageJump(this);">上一页</a></li>
+				<li><a href="#">{{ tcpinfos.number }}</a></li>
+				<li class="next"><a href="{% url tcpinfo_search %}" onclick="return searchPageJump(this);">下一页</a></li>
+			</ul>
+		</div>
+	</div>
+</div>

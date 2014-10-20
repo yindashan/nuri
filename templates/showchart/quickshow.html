@@ -1,0 +1,101 @@
+<!-- content starts -->	
+<div class="row-fluid">
+	<div class="box span12">
+		<div class="box-header well" data-original-title="">
+			<h2><i class="icon-edit"></i> 设置展示时间</h2>
+			<div class="box-icon">
+				<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+				<a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+			</div>
+		</div>
+		<div class="box-content">
+			<form class="form-horizontal" method="GET" action="{% url showchart_simplechart %}" onsubmit="return displayCallback(this);">
+				
+				<div class="control-group">
+					<label class="control-label">应用名称<span style="color:#f00">*</span></label>
+					<div class="controls">
+						<select single class="required" name="app_id" id="app">
+							 <option value ="" selected>请选择</option>
+							{% for app in app_list %}
+				      				<option value ="{{ app.id }}">{{ app.app_name }}</option>
+				      			{% endfor %}
+						</select>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">主机<span style="color:#f00">*</span></label>
+					<div class="controls">
+						<select single class="required" name="host" id="host">
+							<option value ="" selected>请选择</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">开始时间</label>
+					<div class="controls">
+						<input class="input-large required" type="text" name="start_time" readonly id="start_time"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">结束时间</label>
+					<div class="controls">
+						<input class="input-large required" type="text" name="end_time" readonly id="end_time"/>
+					</div>
+				</div>
+				<div class="form-actions">
+				  
+				  <div class="btn-group" data-toggle="buttons-radio">
+				  	<button type="submit" class="btn btn-primary" id="display_btn">确定</button>
+				  	<button type="submit" class="btn btn-primary time_chk" show_type="1">4小时</button>
+				  	<button type="submit" class="btn btn-primary time_chk" show_type="2">1天</button>
+				  	<button type="submit" class="btn btn-primary time_chk" show_type="3">3天</button>
+				  	<button type="submit" class="btn btn-primary time_chk" show_type="4">1周</button>
+				  	<button type="submit" class="btn btn-primary time_chk" show_type="5">1个月</button>
+				  </div>
+				</div>
+			</form>   
+
+		</div>
+	</div><!--/span-->
+</div>
+<!-- content ends -->
+
+<script language="JavaScript" type="text/javascript">
+//----------- start ---------------
+$(document).ready(function(){
+		//校验
+	 	$("form").validate();
+	 	
+		$("#app").chosen({no_results_text: "没有找到",search_contains:true}); 
+	
+		//下拉框控制
+		$("#app").change(function(){
+			var key = $("#app").val();
+			if(key){
+				 jQuery.ajax({
+					type: 'POST',
+					url: "{% url appitem_getappinfo %}",
+					data: {'app_id':key},
+					success: node_config_success,
+					error:error,
+					dataType: 'json',
+					async:true
+				});
+			}
+		});
+
+	    // 设定日期的初始值
+	    $("#start_time").val(new Date(new Date().getTime() - 60*60*24*1000).format('yyyy-MM-dd hh:00'));
+	    $("#end_time").val(new Date().format('yyyy-MM-dd hh:00'));
+	    // 初始化日期选择
+		$("#start_time,#end_time").datetimepicker({
+	        format: "yyyy-mm-dd hh:00",
+	        minView: "day"
+	    });
+	    
+		//选择时间的快捷按钮
+		$(".time_chk").click(show_span_click);
+});
+</script>

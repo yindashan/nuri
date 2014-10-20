@@ -1,0 +1,152 @@
+<!-- content starts -->	
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">系统管理</a> <span class="divider">/</span>
+			</li>
+			<li>
+				<a href="#">监控指数管理</a>
+			</li>
+		</ul>
+	</div>
+	
+	
+	<div class="row-fluid sortable">
+			<div class="box span12">
+				<div class="box-header well" data-original-title>
+					<h2><i class="icon-edit"></i> 编辑监控指数</h2>
+				</div>
+				<div class="box-content">
+					<form class="form-horizontal" method="post" action="{% url monitorindex_edit item.id %}" onsubmit="return validateCallback(this);">
+						<fieldset>
+						
+						  <div class="control-group">
+							<label class="control-label">描述<span style="color:#f00">*</span></label>
+							<div class="controls">
+							  <input class="input-xlarge required" type="text" name="desc" value="{{item.desc}}" />
+							</div>
+						  </div>
+						  
+						<div class="control-group">
+							<label class="control-label">监控指数所属应用服务</label>
+							<div class="controls">
+								<span class="input-xlarge uneditable-input">{{item.app.desc}}</span>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label">监控指数所属监控项</label>
+							<div class="controls">
+								<span class="input-xlarge uneditable-input">{{item.monitor.desc}}</span>
+							</div>
+						</div>
+						  
+						<div class="control-group">
+							<label class="control-label">计算方法</label>
+								<div class="btn-group" data-toggle="buttons">
+									<input type="hidden" id="calc_method_type" value="{{ item.calc_method }}"/>
+									<label class="radio inline">
+										&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="calc_method" value="0" /> 平均值
+									</label>
+									<label class="radio inline">
+										&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="calc_method" value="1" /> 最大值
+									</label>
+									<label class="radio inline">
+										&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="calc_method" value="2" /> 最小值
+									</label>
+								</div>
+						  </div>
+						  
+						  <div class="control-group">
+							<label class="control-label">上限</label>
+								<div class="btn-group" data-toggle="buttons">
+									<input type="hidden" id="ceiling_type" value="{{ item.ceiling }}"/>
+									<label class="radio inline">
+										&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="ceiling" value="-1" /> 无上限
+									</label>
+									<label class="radio inline">
+										&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="ceiling" value="0" /> 有上限
+									</label>
+								</div>
+						  </div>
+						  
+						<div class="control-group" id="ceiling_div">
+							<label class="control-label">上限数值</label>
+							<div class="controls">
+								<input class="input-xlarge" type="text" name="ceiling_number" value="{{ item.ceiling }}"/>
+								<i class="icon-question-sign" data-toggle="tooltip" 
+								data-original-title="请填写上限数值，如100"></i>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label">是否有效</label>
+								<div class="btn-group" data-toggle="buttons">
+									<input type="hidden" id="valid_type" value="{{ item.is_valid }}"/>
+									<label class="radio inline">
+										&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="is_valid" value="0" /> 无效
+									</label>
+									<label class="radio inline">
+										&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="is_valid" value="1" /> 有效
+									</label>
+								</div>
+						  </div>
+						
+						<div class="form-actions">
+							<button type="submit" class="btn btn-primary">保存</button>
+							<button class="btn" onclick ="return httpRedirectAjax('{% url monitorindex_index %}')">取消</button>
+						</div>
+						</fieldset>
+					  </form>
+				
+				</div>
+			</div><!--/span-->
+		
+		</div><!--/row-->
+<!-- content ends -->
+
+<script language="JavaScript" type="text/javascript">
+	function ceiling_type_change(){
+		//选择是否有上限，如果有上限则填写上限数值
+		var ceiling_type = $('input[type="radio"][name="ceiling"]:checked').val();
+  		if(ceiling_type=='0' ){
+  			$("#ceiling_div input").val("");
+  			$("#ceiling_div").show();
+  		}else{
+  			$("#ceiling_div").hide();
+  		}
+  		$("input:visible").addClass("required");
+	}
+	
+	function monitor_index_init() {
+		var calc_method_type = $("#calc_method_type").val();
+		var ceiling_type = $("#ceiling_type").val();
+		var valid_type = $("#valid_type").val();
+		
+		$("input[type='radio'][name='calc_method']").get(calc_method_type).checked = true;
+		
+		if (ceiling_type == "-1") {
+			$("input[type='radio'][name='ceiling']").get("0").checked = true;
+		} else {
+			$("input[type='radio'][name='ceiling']").get("1").checked = true;
+			$("#ceiling_div").show();
+		}
+		
+		$("input[type='radio'][name='is_valid']").get(valid_type).checked = true;
+	}
+//----------- start ---------------
+$(document).ready(function(){
+	//校验
+	$("form").validate();
+	
+	//选择是否有上限，如果有上限则填写上限数值
+	$("#ceiling_div").hide();
+	$("input[name='ceiling']").change(ceiling_type_change);
+	
+	// 初始化 tooltip
+	$('.icon-question-sign').tooltip();
+	
+	monitor_index_init();
+	
+});
+</script>

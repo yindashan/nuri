@@ -1,0 +1,148 @@
+<!-- content starts -->	
+	<div>
+		<ul class="breadcrumb">
+			<li>
+				<a href="#">系统管理</a> <span class="divider">/</span>
+			</li>
+			<li>
+				<a href="#">角色管理</a>
+			</li>
+		</ul>
+	</div>
+	
+	<form  method="post" action="{% url role_add %}" onsubmit="return validateCallback_role(this);">
+
+	<div class="row-fluid sortable">
+			<div class="box span12">
+				<div class="box-header well" data-original-title>
+					<h2><i class="icon-edit"></i> 配置角色信息</h2>
+					<div class="box-icon">
+						<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+					</div>
+				</div>
+				<div class="box-content">
+						<fieldset class="form-horizontal">
+						  <div class="control-group">
+							<label class="control-label">角色名称<span style="color:#f00">*</span></label>
+							<div class="controls">
+							  <input class="input-xlarge required" type="text" name="role_name"/>
+							</div>
+						  </div>
+						  
+						  <div class="control-group">
+							<label class="control-label">描述<span style="color:#f00">*</span></label>
+							<div class="controls">
+							  <input class="input-xlarge required" type="text" name="role_desc"/>
+							</div>
+						  </div>
+						</fieldset>
+				</div>
+			</div><!--/span-->
+		
+		</div><!--/row-->
+		
+		<div class="row-fluid sortable">
+			<div class="box span12">
+				<div class="box-header well" data-original-title>
+					<h2><i class="icon-edit"></i> 配置角色权限</h2>
+					<div class="box-icon">
+						<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+					</div>
+				</div>
+				<div class="box-content">
+					<table width="100%">
+						{% for key,plist in pdict.items %}
+							<tr>
+								<td colspan="2">
+									{% if not forloop.first %}
+										<br/>
+									{% endif %}
+									{{ key }}
+									<hr/>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+										<div class="controls">
+											{% for item in plist %}
+										  		<label class="checkbox inline">
+													<input type="checkbox" name="permission_id" value="{{ item.id }}"/>
+													{{ item.desc }}
+												</label>
+											{% endfor %}
+										</div>
+								</td>
+							</tr>
+						{% endfor %}
+						<tr>
+							<td colspan="2">
+								<br/>
+								节点
+								<hr/>
+							</td>
+						</tr>
+						<tr><td>读权限</td><td>操作权限</td></tr>
+						<tr>
+							<td style="vertical-align:top;" width=50%><ul id="read_right_tree"></ul></td>
+							<td style="vertical-align:top;" width=50%><ul id="operate_right_tree"></ul></td>
+						</tr>
+					</table>
+				
+				</div>
+			</div><!--/span-->
+		
+		</div><!--/row-->
+		
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">保存</button>
+			<button class="btn" onclick ="return httpRedirectAjax('{% url role_index %}')">取消</button>
+	 	</div>
+		</form>
+		
+<!-- content ends -->
+
+<script language="JavaScript" type="text/javascript">
+//装载函数
+function myLoader(param_data){
+	function baseLoader(param,success,error){
+		var opts=$(this).tree("options");
+		if(!opts.url){
+			return false;
+		}
+		$.ajax({
+			type:opts.method,
+			url:opts.url,
+			data:param_data,
+			dataType:"json",
+			success:function(data){
+				success(data);
+			},
+			error:function(){
+				error.apply(this,arguments);
+			}
+		});
+	 }
+	 return baseLoader;
+}
+//----------- start ---------------
+$(document).ready(function(){
+	 param1 = {"purpose":"read"}
+	 param2 = {"purpose":"operate"}
+	 //加载展示节点对应的json字符串
+	 $("#read_right_tree").tree({  
+	    	url:'{% url shownode_righttree %}',  
+	        method:'POST',
+	        loader:myLoader(param1),
+	        checkbox:true
+	 });
+	 $("#operate_right_tree").tree({  
+	    	url:'{% url shownode_righttree %}',  
+	        method:'POST',
+	        loader:myLoader(param2),
+	        checkbox:true
+	 });
+
+	 //校验
+	 $("form").validate();
+});
+</script>
